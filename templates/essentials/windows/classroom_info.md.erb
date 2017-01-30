@@ -1,0 +1,23 @@
+# <%= @variables['company_name'] %> Chef Essentials
+
+## Day 1 (Workstation Info)
+
+| Name | Email | Workstation IP |
+| ---- | ----- | -------------- |
+<% info.each do |i| %>
+| <%= i['student_info'][0] %> | <%= i['student_info'][1] %> | <%= i['workstation_info'][0] %> |
+<% end %>
+
+# Day 2 (Node Info)
+
+| Name | Email | Load Balancer IP | Web 1 IP | Web 2 IP |
+| ---- | ----- | ---------------- | -------- | -------- |
+<% info.each do |i| %>
+| <%= i['student_info'][0] %> | <%= i['student_info'][1] %> | <%= i['load_balancer_info'][0] %> | <%= i['web_1_info'][0] %> | <%= i['web_2_info'][0] %> |
+<% end %>
+
+## Connection Info
+
+Username: `Administrator`
+
+Password: `Cod3Can!`
