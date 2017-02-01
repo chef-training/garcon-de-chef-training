@@ -13,11 +13,11 @@ terraform_variables:
       profile: 'default'
   tags:
     X-Dept: 'Success Engineering'
-    X-Contact: 'larryebaum@chef.io'
+    X-Contact: 'someone@chef.io'
 
 students:
-  - ['John Smith', 'jsmith@generic.com']
-#  - ['Jane Doe', 'jdoe@example.com']
+  - ['Student One', 'someone@example.com']
+  - ['Student Two', 'someone_else@example.com']
 
 # NOTE: AMIs are region specific
 classroom_data:
