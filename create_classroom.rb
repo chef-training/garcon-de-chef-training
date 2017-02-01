@@ -106,6 +106,8 @@ class GarconDeChefTraining
       'templates/essentials/linux/'
     when 'chef-essentials-windows'
       'templates/essentials/windows/'
+    when 'chef-intermediate'
+      'templates/intermediate/linux/'
     end
   end
 

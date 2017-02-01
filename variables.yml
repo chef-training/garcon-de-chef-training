@@ -1,6 +1,7 @@
 # Options:
 #  chef-essentials
 #  chef-essentials-windows
+#  chef-intermediate
 class_type: 'chef-essentials'
 
 company_name: 'Example'
@@ -12,11 +13,11 @@ terraform_variables:
       profile: 'default'
   tags:
     X-Dept: 'Success Engineering'
-    X-Contact: 'jerry@chef.io'
+    X-Contact: 'larryebaum@chef.io'
 
 students:
   - ['John Smith', 'jsmith@generic.com']
-  - ['Jane Doe', 'jdoe@example.com']
+#  - ['Jane Doe', 'jdoe@example.com']
 
 # NOTE: AMIs are region specific
 classroom_data:
@@ -25,3 +26,5 @@ classroom_data:
   chef-essentials-windows:
     workstation-ami: 'ami-d3a4d3c4'
     node-ami: 'ami-4a80ac20'
+  chef-intermediate:
+    ami: 'ami-48ecb65f'
