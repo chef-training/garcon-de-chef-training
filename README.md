@@ -19,3 +19,6 @@ This project does the following:
 4. Create a GitHub Gist from resulting Markdown in `output/` (I recommend using <https://github.com/defunkt/gist>)
 5. Profit
 
+## Cleanup
+
+1. Run `terraform destroy` in the terraform directory corresponding to your class (`output/class_identifier/terraform`)

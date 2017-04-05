@@ -2,9 +2,9 @@
 #  chef-essentials
 #  chef-essentials-windows
 #  chef-intermediate
-class_type: 'chef-essentials'
+class_type: 'chef-essentials-windows'
 
-company_name: 'Example'
+company_name: 'Testing'
 
 terraform_variables:
   provider:
@@ -13,11 +13,10 @@ terraform_variables:
       profile: 'default'
   tags:
     X-Dept: 'Success Engineering'
-    X-Contact: 'someone@chef.io'
+    X-Contact: 'jerry@chef.io'
 
 students:
   - ['Student One', 'someone@example.com']
-  - ['Student Two', 'someone_else@example.com']
 
 # NOTE: AMIs are region specific
 classroom_data:
