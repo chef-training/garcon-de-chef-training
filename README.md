@@ -22,3 +22,33 @@ This project does the following:
 ## Cleanup
 
 1. Run `terraform destroy` in the terraform directory corresponding to your class (Example: `output/2017-04-06-Testing-chef-essentials-windows/terraform/`)
+
+## Using Multiple AWS Accounts
+
+Since this project uses Terraform you have the option to configure it to use an alternate AWS account. To do this you need to configure profiles in your `~/.aws/config`. A detailed guide on this process can be found [here](http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html#cli-multiple-profiles).
+
+TL;DR:
+  1. Add a profile block to your `~/.aws/config`. Example:
+  ```
+  [default]
+  region=us-west-2
+  output=json
+
+  [profile other-account]
+  region=us-east-1
+  output=json
+  ```
+  2. Add credentials for your profile to `~/.aws/credentials`. Example:
+  ```
+  [default]
+  aws_access_key_id=AKIAIOSFODNN7EXAMPLE
+  aws_secret_access_key=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+
+  [other-account]
+  aws_access_key_id=AKIAI44QH8DHBEXAMPLE
+  aws_secret_access_key=je7MtGbClwBF/2Zp9Utk/h3yCo8nvbEXAMPLEKEY
+  ```
+  3. Modify profile value in `variables.yml` in the root of this project
+  4. Follow other parts of the `How to Use` section above
+
+
