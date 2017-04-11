@@ -21,4 +21,4 @@ This project does the following:
 
 ## Cleanup
 
-1. Run `terraform destroy` in the terraform directory corresponding to your class (`output/class_identifier/terraform`)
+1. Run `terraform destroy` in the terraform directory corresponding to your class (Example: `output/2017-04-06-Testing-chef-essentials-windows/terraform/`)
