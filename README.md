@@ -11,10 +11,10 @@ This project does the following:
 
 1. Verify `~/.aws/credentials` is configured. (see [here](http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html))
 2. Modify `variables.yml`
-  - Modify class type
-  - Modify company name
-  - Modify tag info (X-Dept, X-Contact)
-  - Modify student list
+    - Modify class type
+    - Modify company name
+    - Modify tag info (X-Dept, X-Contact)
+    - Modify student list
 3. Run `ruby create_classroom.rb`
 4. Create a GitHub Gist from resulting Markdown in `output/` (I recommend using <https://github.com/defunkt/gist>)
 5. Profit
