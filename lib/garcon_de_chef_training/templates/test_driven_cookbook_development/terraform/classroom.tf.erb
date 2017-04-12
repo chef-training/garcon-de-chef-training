@@ -1,0 +1,165 @@
+provider "aws" {
+  region = "<%= template_variables['terraform_variables']['provider']['aws']['region'] %>"
+}
+
+resource "aws_vpc" "classroom-vpc" {
+  cidr_block           = "10.0.0.0/16"
+  enable_dns_hostnames = true
+
+  tags {
+    Name      = "<%= template_variables['safe_company_name'] %>-<%= template_variables['class_type'] %>-vpc"
+    X-Dept    = "<%= template_variables['terraform_variables']['tags']['X-Dept'] %>"
+    X-Contact = "<%= template_variables['terraform_variables']['tags']['X-Contact'] %>"
+  }
+}
+
+resource "aws_internet_gateway" "classroom-gw" {
+  vpc_id = "${aws_vpc.classroom-vpc.id}"
+
+  tags {
+    Name      = "<%= template_variables['safe_company_name'] %>-<%= template_variables['class_type'] %>-gateway"
+    X-Dept    = "<%= template_variables['terraform_variables']['tags']['X-Dept'] %>"
+    X-Contact = "<%= template_variables['terraform_variables']['tags']['X-Contact'] %>"
+  }
+}
+
+resource "aws_route_table" "classroom-routes" {
+  vpc_id = "${aws_vpc.classroom-vpc.id}"
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = "${aws_internet_gateway.classroom-gw.id}"
+  }
+
+  tags {
+    Name      = "<%= template_variables['safe_company_name'] %>-<%= template_variables['class_type'] %>-routes"
+    X-Dept    = "<%= template_variables['terraform_variables']['tags']['X-Dept'] %>"
+    X-Contact = "<%= template_variables['terraform_variables']['tags']['X-Contact'] %>"
+  }
+}
+
+resource "aws_subnet" "classroom-subnet" {
+  vpc_id     = "${aws_vpc.classroom-vpc.id}"
+  cidr_block = "10.0.0.0/24"
+
+  tags {
+    Name      = "<%= template_variables['safe_company_name'] %>-<%= template_variables['class_type'] %>-subnet"
+    X-Dept    = "<%= template_variables['terraform_variables']['tags']['X-Dept'] %>"
+    X-Contact = "<%= template_variables['terraform_variables']['tags']['X-Contact'] %>"
+  }
+}
+
+resource "aws_route_table_association" "classroom-route_association" {
+  subnet_id      = "${aws_subnet.classroom-subnet.id}"
+  route_table_id = "${aws_route_table.classroom-routes.id}"
+}
+
+resource "aws_network_acl" "classroom-acl" {
+  vpc_id     = "${aws_vpc.classroom-vpc.id}"
+  subnet_ids = ["${aws_subnet.classroom-subnet.id}"]
+
+  egress {
+    protocol   = -1
+    rule_no    = 2
+    action     = "allow"
+    cidr_block = "0.0.0.0/0"
+    from_port  = 0
+    to_port    = 0
+  }
+
+  ingress {
+    protocol   = -1
+    rule_no    = 1
+    action     = "allow"
+    cidr_block = "0.0.0.0/0"
+    from_port  = 0
+    to_port    = 0
+  }
+
+  tags {
+    Name      = "<%= template_variables['safe_company_name'] %>-<%= template_variables['class_type'] %>-acl"
+    X-Dept    = "<%= template_variables['terraform_variables']['tags']['X-Dept'] %>"
+    X-Contact = "<%= template_variables['terraform_variables']['tags']['X-Contact'] %>"
+  }
+}
+
+resource "aws_security_group" "classroom-sg" {
+  name        = "<%= template_variables['safe_company_name'] %>-<%= template_variables['class_type'] %>-sg"
+  description = "Allow all inbound traffic"
+  vpc_id      = "${aws_vpc.classroom-vpc.id}"
+
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "TCP"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "TCP"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "TCP"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags {
+    Name      = "<%= template_variables['safe_company_name'] %>-<%= template_variables['class_type'] %>-vpc"
+    X-Dept    = "<%= template_variables['terraform_variables']['tags']['X-Dept'] %>"
+    X-Contact = "<%= template_variables['terraform_variables']['tags']['X-Contact'] %>"
+  }
+}
+<% template_variables['students'].each do |student| %>
+
+resource "aws_instance" "<%= student[0].tr('^A-Za-z0-9', '-') %>-TDD-Workstation" {
+  depends_on                  = ["aws_internet_gateway.classroom-gw"]
+  ami                         = "<%= template_variables['classroom_data'][template_variables['class_type']]['ami'] %>"
+  instance_type               = "t1.micro"
+  vpc_security_group_ids      = ["${aws_security_group.classroom-sg.id}"]
+  subnet_id                   = "${aws_subnet.classroom-subnet.id}"
+  associate_public_ip_address = true
+
+  connection {
+    user     = "chef"
+    password = "chef"
+  }
+
+  tags {
+    Name          = "<%= template_variables['safe_company_name'] %>-<%= student[0].tr('^A-Za-z0-9', '-') %>-<%= template_variables['class_type'] %>-Workstation"
+    Student-Name  = "<%= student[0] %>"
+    Student-Email = "<%= student[1] %>"
+    X-Dept        = "<%= template_variables['terraform_variables']['tags']['X-Dept'] %>"
+    X-Contact     = "<%= template_variables['terraform_variables']['tags']['X-Contact'] %>"
+  }
+
+  root_block_device {
+    volume_type           = "gp2"
+    volume_size           = "20"
+    delete_on_termination = true
+  }
+}
+<% end %>
+
+output "classroom_info" {
+  value = [
+<% template_variables['students'].each do |student| %>
+    "${map(
+       "student_info", list("<%= student[0] %>", "<%= student[1] %>"),
+       "workstation_info", list(aws_instance.<%= student[0].tr('^A-Za-z0-9', '-') %>-TDD-Workstation.0.public_ip, aws_instance.<%= student[0].tr('^A-Za-z0-9', '-') %>-TDD-Workstation.0.public_dns)
+     )}",
+<% end %>
+  ]
+}

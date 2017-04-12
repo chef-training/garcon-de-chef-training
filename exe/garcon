@@ -1,0 +1,17 @@
+#!/usr/bin/env ruby
+
+require_relative '../lib/garcon_de_chef_training'
+
+args = Hash[ARGV.join(' ').scan(/--?([^=\s]+)(?:=(\S+))?/)]
+
+garcon = GarconDeChefTraining.new
+
+garcon.create_classroom! if args.empty?
+
+if args.key?('destroy')
+  if args.key?('force')
+    garcon.destroy_classroom!(force: true)
+  else
+    garcon.destroy_classroom!
+  end
+end

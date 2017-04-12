@@ -1,0 +1,13 @@
+# <%= company_name %> Test Driven Cookbook Development
+
+| Name | Email | Workstation IP |
+| ---- | ----- | -------------- |
+<% info.each do |i| %>
+| <%= i['student_info'][0] %> | <%= i['student_info'][1] %> | <%= i['workstation_info'][0] %> |
+<% end %>
+
+## Connection Info
+
+Username: `chef`
+
+Password: `chef`

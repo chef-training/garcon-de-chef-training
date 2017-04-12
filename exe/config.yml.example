@@ -2,9 +2,10 @@
 #  chef-essentials
 #  chef-essentials-windows
 #  chef-intermediate
-class_type: 'chef-essentials-windows'
+#  test_driven_cookbook_development
+class_type: 'test_driven_cookbook_development'
 
-company_name: 'Testing'
+company_name: 'ExampleCompany'
 
 terraform_variables:
   provider:
@@ -13,17 +14,20 @@ terraform_variables:
       profile: 'default'
   tags:
     X-Dept: 'Success Engineering'
-    X-Contact: 'jerry@chef.io'
+    X-Contact: 'someone@chef.io'
 
 students:
-  - ['Student One', 'someone@example.com']
+  - ['Jane Smith', 'jane.smith@example.com']
+  - ['John Smith', 'john.smith@example.com']
 
 # NOTE: AMIs are region specific
 classroom_data:
   chef-essentials:
     ami: 'ami-4c6a0d5b'
   chef-essentials-windows:
-    workstation-ami: 'ami-d3a4d3c4'
+    workstation-ami: 'ami-4a6da55c'
     node-ami: 'ami-4a80ac20'
   chef-intermediate:
     ami: 'ami-48ecb65f'
+  test_driven_cookbook_development:
+    ami: 'ami-3f224d28'

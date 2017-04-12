@@ -1,5 +1,5 @@
 provider "aws" {
-  region = "<%= variables['terraform_variables']['provider']['aws']['region'] %>"
+  region = "<%= template_variables['terraform_variables']['provider']['aws']['region'] %>"
 }
 
 resource "aws_vpc" "classroom-vpc" {
@@ -7,9 +7,9 @@ resource "aws_vpc" "classroom-vpc" {
   enable_dns_hostnames = true
 
   tags {
-    Name      = "<%= variables['prefix'] %>-<%= variables['class_type'] %>-vpc"
-    X-Dept    = "<%= variables['terraform_variables']['tags']['X-Dept'] %>"
-    X-Contact = "<%= variables['terraform_variables']['tags']['X-Contact'] %>"
+    Name      = "<%= template_variables['safe_company_name'] %>-<%= template_variables['class_type'] %>-vpc"
+    X-Dept    = "<%= template_variables['terraform_variables']['tags']['X-Dept'] %>"
+    X-Contact = "<%= template_variables['terraform_variables']['tags']['X-Contact'] %>"
   }
 }
 
@@ -17,9 +17,9 @@ resource "aws_internet_gateway" "classroom-gw" {
   vpc_id = "${aws_vpc.classroom-vpc.id}"
 
   tags {
-    Name      = "<%= variables['prefix'] %>-<%= variables['class_type'] %>-gateway"
-    X-Dept    = "<%= variables['terraform_variables']['tags']['X-Dept'] %>"
-    X-Contact = "<%= variables['terraform_variables']['tags']['X-Contact'] %>"
+    Name      = "<%= template_variables['safe_company_name'] %>-<%= template_variables['class_type'] %>-gateway"
+    X-Dept    = "<%= template_variables['terraform_variables']['tags']['X-Dept'] %>"
+    X-Contact = "<%= template_variables['terraform_variables']['tags']['X-Contact'] %>"
   }
 }
 
@@ -32,9 +32,9 @@ resource "aws_route_table" "classroom-routes" {
   }
 
   tags {
-    Name      = "<%= variables['prefix'] %>-<%= variables['class_type'] %>-routes"
-    X-Dept    = "<%= variables['terraform_variables']['tags']['X-Dept'] %>"
-    X-Contact = "<%= variables['terraform_variables']['tags']['X-Contact'] %>"
+    Name      = "<%= template_variables['safe_company_name'] %>-<%= template_variables['class_type'] %>-routes"
+    X-Dept    = "<%= template_variables['terraform_variables']['tags']['X-Dept'] %>"
+    X-Contact = "<%= template_variables['terraform_variables']['tags']['X-Contact'] %>"
   }
 }
 
@@ -43,9 +43,9 @@ resource "aws_subnet" "classroom-subnet" {
   cidr_block = "10.0.0.0/24"
 
   tags {
-    Name      = "<%= variables['prefix'] %>-<%= variables['class_type'] %>-subnet"
-    X-Dept    = "<%= variables['terraform_variables']['tags']['X-Dept'] %>"
-    X-Contact = "<%= variables['terraform_variables']['tags']['X-Contact'] %>"
+    Name      = "<%= template_variables['safe_company_name'] %>-<%= template_variables['class_type'] %>-subnet"
+    X-Dept    = "<%= template_variables['terraform_variables']['tags']['X-Dept'] %>"
+    X-Contact = "<%= template_variables['terraform_variables']['tags']['X-Contact'] %>"
   }
 }
 
@@ -77,14 +77,14 @@ resource "aws_network_acl" "classroom-acl" {
   }
 
   tags {
-    Name      = "<%= variables['prefix'] %>-<%= variables['class_type'] %>-acl"
-    X-Dept    = "<%= variables['terraform_variables']['tags']['X-Dept'] %>"
-    X-Contact = "<%= variables['terraform_variables']['tags']['X-Contact'] %>"
+    Name      = "<%= template_variables['safe_company_name'] %>-<%= template_variables['class_type'] %>-acl"
+    X-Dept    = "<%= template_variables['terraform_variables']['tags']['X-Dept'] %>"
+    X-Contact = "<%= template_variables['terraform_variables']['tags']['X-Contact'] %>"
   }
 }
 
 resource "aws_security_group" "classroom-sg" {
-  name        = "<%= variables['prefix'] %>-<%= variables['class_type'] %>-sg"
+  name        = "<%= template_variables['safe_company_name'] %>-<%= template_variables['class_type'] %>-sg"
   description = "Allow all inbound traffic"
   vpc_id      = "${aws_vpc.classroom-vpc.id}"
 
@@ -124,16 +124,16 @@ resource "aws_security_group" "classroom-sg" {
   }
 
   tags {
-    Name      = "<%= variables['prefix'] %>-<%= variables['class_type'] %>-vpc"
-    X-Dept    = "<%= variables['terraform_variables']['tags']['X-Dept'] %>"
-    X-Contact = "<%= variables['terraform_variables']['tags']['X-Contact'] %>"
+    Name      = "<%= template_variables['safe_company_name'] %>-<%= template_variables['class_type'] %>-vpc"
+    X-Dept    = "<%= template_variables['terraform_variables']['tags']['X-Dept'] %>"
+    X-Contact = "<%= template_variables['terraform_variables']['tags']['X-Contact'] %>"
   }
 }
-<% @variables['students'].each do |student| %>
+<% template_variables['students'].each do |student| %>
 
 resource "aws_instance" "<%= student[0].tr('^A-Za-z0-9', '-') %>-intermediate-workstation" {
   depends_on                  = ["aws_internet_gateway.classroom-gw"]
-  ami                         = "<%= @variables['classroom_data'][@variables['class_type']]['ami'] %>"
+  ami                         = "<%= template_variables['classroom_data'][template_variables['class_type']]['ami'] %>"
   instance_type               = "t1.micro"
   vpc_security_group_ids      = ["${aws_security_group.classroom-sg.id}"]
   subnet_id                   = "${aws_subnet.classroom-subnet.id}"
@@ -145,11 +145,11 @@ resource "aws_instance" "<%= student[0].tr('^A-Za-z0-9', '-') %>-intermediate-wo
   }
 
   tags {
-    Name          = "<%= variables['prefix'] %>-<%= student[0].tr('^A-Za-z0-9', '-') %>-<%= variables['class_type'] %>-workstation"
+    Name          = "<%= template_variables['safe_company_name'] %>-<%= student[0].tr('^A-Za-z0-9', '-') %>-<%= template_variables['class_type'] %>-workstation"
     Student-Name  = "<%= student[0] %>"
     Student-Email = "<%= student[1] %>"
-    X-Dept        = "<%= variables['terraform_variables']['tags']['X-Dept'] %>"
-    X-Contact     = "<%= variables['terraform_variables']['tags']['X-Contact'] %>"
+    X-Dept        = "<%= template_variables['terraform_variables']['tags']['X-Dept'] %>"
+    X-Contact     = "<%= template_variables['terraform_variables']['tags']['X-Contact'] %>"
   }
 
   root_block_device {
@@ -163,7 +163,7 @@ resource "aws_instance" "<%= student[0].tr('^A-Za-z0-9', '-') %>-intermediate-wo
 
 output "classroom_info" {
   value = [
-<% variables['students'].each do |student| %>
+<% template_variables['students'].each do |student| %>
     "${map(
        "student_info", list("<%= student[0] %>", "<%= student[1] %>"),
        "workstation_info", list(aws_instance.<%= student[0].tr('^A-Za-z0-9', '-') %>-intermediate-workstation.public_ip, aws_instance.<%= student[0].tr('^A-Za-z0-9', '-') %>-intermediate-workstation.public_dns)
