@@ -19,10 +19,14 @@ class GarconDeChefTraining
 
   # Performs all the steps needed to create a classroom
   def create_classroom!
-    create_directory!(@output_path)
-    create_directory!(@terraform_dir)
-    create_machines!
-    create_markdown!
+    if class_exist?
+      prompt_for_continue
+    else
+      create_directory!(@output_path)
+      create_directory!(@terraform_dir)
+      create_machines!
+      create_markdown!
+    end
   end
 
   # Performs all the steps needed to destroy a classroom
@@ -74,5 +78,18 @@ class GarconDeChefTraining
       GarconDeChefTraining::Terraform.run_terraform_output(@terraform_dir),
       @output_path
     )
+  end
+
+  def class_exist?
+    File.exist?(@output_path)
+  end
+
+  def prompt_for_continue
+    class_name = @output_path.gsub('output/', '')
+    # `STDOUT` is explicity called here for RSPEC matcher
+    STDOUT.puts "WARNING: Class #{class_name} already exists"
+    STDOUT.puts 'WARNING: Continuing could cause unexpected results'
+    STDOUT.puts 'Are you sure you want to continue? (Y/N)'
+    exit 0 if $stdin.gets.chomp.casecmp('N').zero?
   end
 end

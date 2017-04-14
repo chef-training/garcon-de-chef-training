@@ -67,11 +67,30 @@ describe GarconDeChefTraining do
           .with(garcon.output_path).and_return(true)
         allow(File).to receive(:exist?)
           .with(garcon.terraform_dir).and_return(true)
+        allow($stdin).to receive_message_chain(:gets, :chomp, :casecmp, :zero?)
+          .and_return(false)
       end
       it 'should not recursively create directories for output and terraform' do
         expect(FileUtils).not_to receive(:mkdir_p).with(garcon.output_path)
         expect(FileUtils).not_to receive(:mkdir_p).with(garcon.terraform_dir)
         garcon.create_classroom!
+      end
+
+      it 'should prompt the user with a warning and ask to continue' do
+        expect(STDOUT).to receive(:puts).with(/WARNING.*exists/)
+        expect(STDOUT).to receive(:puts).with(/WARNING.*unexpected results/)
+        expect(STDOUT).to receive(:puts).with(/Are you sure/)
+        garcon.create_classroom!
+      end
+
+      it 'should exit with a status of 0 if the user chooses not to continue' do
+        allow($stdin).to receive_message_chain(:gets, :chomp, :casecmp, :zero?)
+          .and_return(true)
+        begin
+          garcon.create_classroom!
+        rescue SystemExit => e
+          expect(e.status).to eql(0)
+        end
       end
     end
     it 'should call ::Terraform.create_classroom!' do
