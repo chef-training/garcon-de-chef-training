@@ -5,7 +5,7 @@
 #  test_driven_cookbook_development
 class_type: 'test_driven_cookbook_development'
 
-company_name: 'ExampleCompany'
+company_name: 'Example Company'
 
 terraform_variables:
   provider:

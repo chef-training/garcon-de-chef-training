@@ -10,21 +10,20 @@ This project does the following:
 ## How To Use
 
 1. Verify `~/.aws/credentials` is configured. (see [here](http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html))
-2. Change directories into `exe/`
-3. Copy `config.yml.example` to `config.yml`
-2. Modify `config.yml`
+2. Copy `config.yml.example` to `config.yml`
+3. Modify `config.yml`
     - Modify class type
     - Modify company name
     - Modify tag info (X-Dept, X-Contact)
     - Modify student list
-3. Run `./garcon`
+3. Run `./exe/garcon`
 4. Create a GitHub Gist from resulting Markdown in `output/` (I recommend using <https://github.com/defunkt/gist>)
 5. Profit
 
 ## Cleanup
 
 ### Automatic
-1. Run `./garcon -destroy -force`
+1. Run `./exe/garcon -destroy -force`
 
 ### Manual
 2. Run `terraform destroy -force` in the terraform directory corresponding to your class (Example: `output/2017-04-06-Testing-chef-essentials-windows/terraform/`)
