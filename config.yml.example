@@ -1,6 +1,6 @@
 # Options:
 #  chef-essentials
-#  chef-essentials-windows
+#  chef-essentials-windows WARNING: This class is only supported using the internal Training AWS Account
 #  chef-intermediate
 #  test_driven_cookbook_development
 class_type: 'test_driven_cookbook_development'

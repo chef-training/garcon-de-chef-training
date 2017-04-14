@@ -1,4 +1,5 @@
 # WARNING: THIS PROJECT ASSUMES PRE-CONFIGURED IMAGES. THIS WILL LIKELY NOT WORK OUTSIDE INTERNAL CHEF
+# DOUBLE WARNING: THE ABOVE IS ESPECIALLY TRUE FOR CHEF ESSENTIALS WINDOWS IT WILL ONLY WORK IN THE TRAINING AWS ACCOUNT
 
 ## Purpose
 Creating machines for students to use in our [onsite Chef training](https://training.chef.io/training/onsite.html) takes manual effort. I don't like manual effort. This project reduces manual effort significantly.
