@@ -155,6 +155,7 @@ resource "aws_instance" "<%= student[0].tr('^A-Za-z0-9', '-') %>-Essentials-Work
   instance_type               = "t2.large"
   vpc_security_group_ids      = ["${aws_security_group.classroom-sg.id}"]
   subnet_id                   = "${aws_subnet.classroom-subnet.id}"
+  iam_instance_profile        = "test-kitchen"
   associate_public_ip_address = true
 
   # Baked into AMI
