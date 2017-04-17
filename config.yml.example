@@ -23,11 +23,11 @@ students:
 # NOTE: AMIs are region specific
 classroom_data:
   chef-essentials:
-    ami: 'ami-4c6a0d5b'
+    ami: 'ami-c957c3df'
   chef-essentials-windows:
     workstation-ami: 'ami-4a6da55c'
     node-ami: 'ami-4a80ac20'
   chef-intermediate:
-    ami: 'ami-48ecb65f'
+    ami: 'ami-c957c3df'
   test_driven_cookbook_development:
-    ami: 'ami-3f224d28'
+    ami: 'ami-8f66f399'
