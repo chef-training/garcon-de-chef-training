@@ -61,7 +61,7 @@ class GarconDeChefTraining
 
       def run_terraform_apply!(terraform_dir)
         Dir.chdir(terraform_dir) do
-          puts "Running `terraform plan` silently in #{terraform_dir}..."
+          puts "Running `terraform plan` silently in `#{terraform_dir}`"
           system('terraform plan -detailed-exitcode > /dev/null')
           if $?.exitstatus == 2 # rubocop:disable SpecialGlobalVars
             puts "Running `terraform apply` in #{terraform_dir}..."
