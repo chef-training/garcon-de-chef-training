@@ -1,5 +1,6 @@
 provider "aws" {
   region = "<%= template_variables['terraform_variables']['provider']['aws']['region'] %>"
+  profile = "<%= template_variables['terraform_variables']['provider']['aws']['profile'] %>"
 }
 
 resource "aws_vpc" "classroom-vpc" {
