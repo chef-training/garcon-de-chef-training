@@ -30,4 +30,4 @@ classroom_data:
   chef-intermediate:
     ami: 'ami-c957c3df'
   test_driven_cookbook_development:
-    ami: 'ami-8f66f399'
+    ami: 'ami-48ac385e'
