@@ -11,7 +11,7 @@ RSpec.configure do |config|
   # Use the specified formatter
   config.formatter = :documentation
 
-  # Redirect stdin/stdout to suppress puts output
+  # Redirect stderr/stdout to suppress puts output
   original_stderr = $stderr
   original_stdout = $stdout
   config.before(:all) do

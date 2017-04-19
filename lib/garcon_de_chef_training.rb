@@ -86,10 +86,10 @@ class GarconDeChefTraining
 
   def prompt_for_continue
     class_name = @output_path.gsub('output/', '')
-    # `STDOUT` is explicity called here for RSPEC matcher
-    STDOUT.puts "WARNING: Class #{class_name} already exists"
-    STDOUT.puts 'WARNING: Continuing could cause unexpected results'
-    STDOUT.puts 'Are you sure you want to continue? (Y/N)'
+    # `$stdout` is explicity called here for RSPEC matcher
+    $stdout.puts "WARNING: Class #{class_name} already exists"
+    $stdout.puts 'WARNING: Continuing could cause unexpected results'
+    $stdout.puts 'Are you sure you want to continue? (Y/N)'
     exit 0 if $stdin.gets.chomp.casecmp('N').zero?
   end
 

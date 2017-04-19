@@ -77,9 +77,9 @@ describe GarconDeChefTraining do
       end
 
       it 'should prompt the user with a warning and ask to continue' do
-        expect(STDOUT).to receive(:puts).with(/WARNING.*exists/)
-        expect(STDOUT).to receive(:puts).with(/WARNING.*unexpected results/)
-        expect(STDOUT).to receive(:puts).with(/Are you sure/)
+        expect($stdout).to receive(:puts).with(/WARNING.*exists/)
+        expect($stdout).to receive(:puts).with(/WARNING.*unexpected results/)
+        expect($stdout).to receive(:puts).with(/Are you sure/)
         garcon.create_classroom!
       end
 
