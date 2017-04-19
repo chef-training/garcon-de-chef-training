@@ -17,17 +17,17 @@ This project does the following:
     - Modify company name
     - Modify tag info (X-Dept, X-Contact)
     - Modify student list
-3. Run `./exe/garcon`
+3. Run `rake create`
 4. Create a GitHub Gist from resulting Markdown in `output/` (I recommend using <https://github.com/defunkt/gist>)
 5. Profit
 
 ## Cleanup
 
 ### Automatic
-1. Run `./exe/garcon -destroy -force`
+1. Run `rake destroy:force`
 
 ### Manual
-2. Run `terraform destroy -force` in the terraform directory corresponding to your class (Example: `output/2017-04-06-Testing-chef-essentials-windows/terraform/`)
+2. Run `terraform destroy` in the terraform directory corresponding to your class (Example: `output/2017-04-06-Testing-chef-essentials-windows/terraform/`)
 
 ## Using Multiple AWS Accounts
 
@@ -59,4 +59,10 @@ TL;DR:
 
 ## Testing
 
-This project has `rspec` tests. To run them run `rspec` in the root of this project.
+This project both conforms to RuboCop standards and has RSpec tests.
+
+To run both use: `rake test`
+
+To run just RSpec run: `rake test:unit`
+
+To run just RuboCop run: `rake test:lint`
