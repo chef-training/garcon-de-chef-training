@@ -33,12 +33,12 @@ class GarconDeChefTraining
   def destroy_classroom!(args = {})
     if args['force'] || args[:force]
       GarconDeChefTraining::Terraform.run_terraform_destroy!(
-        @terraform_dir,
+        select_terraform_dir,
         force: true
       )
     else
       GarconDeChefTraining::Terraform.run_terraform_destroy!(
-        @terraform_dir
+        select_terraform_dir
       )
     end
   end
@@ -91,5 +91,19 @@ class GarconDeChefTraining
     STDOUT.puts 'WARNING: Continuing could cause unexpected results'
     STDOUT.puts 'Are you sure you want to continue? (Y/N)'
     exit 0 if $stdin.gets.chomp.casecmp('N').zero?
+  end
+
+  # The `@terraform_dir` always has the current date in it
+  # This method selects one class based on matching everything but the date
+  def select_terraform_dir
+    # Select all terraform directories in `output/`
+    terraform_dirs = Dir.glob('output/**/terraform')
+    class_selector = [@safe_company_name, @config['class_type']].join('-')
+    # Build list of Terraform directories that match the class selector
+    selected_dirs = terraform_dirs.select { |d| d.match(class_selector) } || []
+    num_classes = selected_dirs.length
+    return selected_dirs.first if num_classes == 1
+    raise "ERROR: Multiple classes match #{class_selector}" if num_classes > 1
+    raise "ERROR: No classes match #{class_selector}" if num_classes.zero?
   end
 end

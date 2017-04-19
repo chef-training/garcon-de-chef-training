@@ -101,16 +101,66 @@ describe GarconDeChefTraining do
   end
 
   describe '#destroy_classroom!' do
-    it 'should call ::Terraform.run_terraform_destroy!' do
-      expect(terraform).to receive('run_terraform_destroy!')
-        .with(garcon.terraform_dir)
-      garcon.destroy_classroom!
-    end
-    context 'when `force: true` is specified' do
-      it 'should call ::Terraform.run_terraform_destroy! with `force: true`' do
+    context 'when exactly one class exists that matches class selector' do
+      before do
+        terraform_dirs = ['output/2017-05-20-mycorp-rspec-essentials/terraform']
+        allow(Dir).to receive(:glob).with('output/**/terraform')
+          .and_return(terraform_dirs)
+      end
+      it 'should call ::Terraform.run_terraform_destroy!' do
         expect(terraform).to receive('run_terraform_destroy!')
-          .with(garcon.terraform_dir, force: true)
-        garcon.destroy_classroom!(force: true)
+          .with(garcon.terraform_dir)
+        garcon.destroy_classroom!
+      end
+      context 'when `force: true` is specified' do
+        it 'should call #run_terraform_destroy! with `force: true`' do
+          expect(terraform).to receive('run_terraform_destroy!')
+            .with(garcon.terraform_dir, force: true)
+          garcon.destroy_classroom!(force: true)
+        end
+      end
+    end
+    context 'when multiple classes exist that match class selector' do
+      before do
+        terraform_dirs = [
+          'output/2017-05-20-mycorp-rspec-essentials/terraform',
+          'output/2017-05-21-mycorp-rspec-essentials/terraform'
+        ]
+        allow(Dir).to receive(:glob).with('output/**/terraform')
+          .and_return(terraform_dirs)
+      end
+      it 'should not call #run_terraform_destroy!' do
+        expect(terraform).to_not receive('run_terraform_destroy!')
+          .with(garcon.terraform_dir)
+        expect { garcon.destroy_classroom! }.to raise_error(/Multiple/)
+      end
+      context 'when `force: true` is specified' do
+        it 'should not call #run_terraform_destroy! with `force: true`' do
+          expect(terraform).to_not receive('run_terraform_destroy!')
+            .with(garcon.terraform_dir, force: true)
+          expect { garcon.destroy_classroom! }.to raise_error(/Multiple/)
+        end
+      end
+    end
+    context 'when no classes exist that match class selector' do
+      before do
+        terraform_dirs = [
+          'output/0000-00-00-notcorp-notclass-essentials/terraform'
+        ]
+        allow(Dir).to receive(:glob).with('output/**/terraform')
+          .and_return(terraform_dirs)
+      end
+      it 'should not call #run_terraform_destroy!' do
+        expect(terraform).to_not receive('run_terraform_destroy!')
+          .with(garcon.terraform_dir)
+        expect { garcon.destroy_classroom! }.to raise_error(/No classes/)
+      end
+      context 'when `force: true` is specified' do
+        it 'should not call #run_terraform_destroy! with `force: true`' do
+          expect(terraform).to_not receive('run_terraform_destroy!')
+            .with(garcon.terraform_dir, force: true)
+          expect { garcon.destroy_classroom! }.to raise_error(/No classes/)
+        end
       end
     end
   end
