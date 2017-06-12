@@ -8,9 +8,9 @@ class GarconDeChefTraining
 
   attr_reader :config, :output_path, :terraform_dir, :safe_company_name
 
-  def initialize
+  def initialize(path_to_config_yaml = 'config.yml')
     # rubocop:disable Security/YAMLLoad
-    @config = YAML.load(File.read('config.yml'))
+    @config = YAML.load(File.read(path_to_config_yaml))
     # rubocop:enable Security/YAMLLoad
 
     # This replaces non-alphanumeric characters with `-`

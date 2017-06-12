@@ -1,0 +1,16 @@
+#!/usr/bin/env ruby
+require_relative '../lib/garcon_de_chef_training'
+
+config_yaml_file = ARGV[0]
+action = ARGV[1]
+
+case action
+when 'create'
+  GarconDeChefTraining.new(config_yaml_file).create_classroom!
+when 'destroy'
+  GarconDeChefTraining.new(config_yaml_file).destroy_classroom!(
+    force: ARGV.include?('--force')
+  )
+else
+  puts 'usage: garcon PATH_TO_CONFIG_YAML (destroy|create) [--force]'
+end

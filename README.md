@@ -23,14 +23,14 @@ This project depends on Hashicorp Terraform to create resources in AWS. Ensure T
     - Modify company name
     - Modify tag info (X-Dept, X-Contact)
     - Modify student list
-3. Run `rake create`
+3. Run `rake create` or `./exe/garcon PATH_TO_CONFIG_YAML create`
 4. Create a GitHub Gist from resulting Markdown in `output/` (I recommend using <https://github.com/defunkt/gist>)
 5. Profit
 
 ## Cleanup
 
 ### Automatic
-1. Run `rake destroy:force`
+1. Run `rake destroy:force` or `./exe/garcon PATH_TO_CONFIG_YAML destroy --force`
 
 ### Manual
 2. Run `terraform destroy` in the terraform directory corresponding to your class (Example: `output/2017-04-06-Testing-chef-essentials-windows/terraform/`)
