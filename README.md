@@ -8,6 +8,12 @@ This project does the following:
   - Creates machines for [onsite Chef training](https://training.chef.io/training/onsite.html)
   - Creates a Markdown file that assigns machines to students
 
+## Prerequisites
+
+This project depends on Hashicorp Terraform to create resources in AWS. Ensure Terraform is installed by installing from [here](https://www.terraform.io/downloads.html).
+
+> NOTE: This guide assumes that the Terraform binary is in your PATH environment variable. Your package manager should handle this. If not, place the binary in `/usr/local/bin` or if on Windows, create a directory containing that binary and add it to your `%PATH%` (Example: `C:\Hashicorp\terraform`)
+
 ## How To Use
 
 1. Verify `~/.aws/credentials` is configured. (see [here](http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html))
@@ -56,6 +62,8 @@ TL;DR:
   ```
   3. Modify profile value in your `config.yml`
   4. Follow other parts of the `How to Use` section above
+
+> NOTE: Should you have AWS access and secret keys hardcoded as environment variables Terraform will give these values precedence. You may wish to update those entries or manage your AWS credentials as indicated above.
 
 ## Testing
 
