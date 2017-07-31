@@ -22,14 +22,11 @@ class GarconDeChefTraining
 
   # Performs all the steps needed to create a classroom
   def create_classroom!
-    if class_exist?
-      prompt_for_continue
-    else
-      create_directory!(@output_path)
-      create_directory!(@terraform_dir)
-      create_machines!
-      create_markdown!
-    end
+    prompt_for_continue if class_exist?
+    create_directory!(@output_path)
+    create_directory!(@terraform_dir)
+    create_machines!
+    create_markdown!
   end
 
   # Performs all the steps needed to destroy a classroom
