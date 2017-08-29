@@ -12,6 +12,8 @@ describe GarconDeChefTraining do
       company_name: 'mycorp'
     EOY
     allow(File).to receive(:read).with('config.yml').and_return(@mock_config)
+    allow(File).to receive(:exist?).and_call_original
+    allow(File).to receive(:exist?).with('config.yml').and_return(true)
     allow(Time).to receive_message_chain(:now, :strftime)
       .with('%Y-%m-%d')
       .and_return('2017-05-20')
@@ -27,6 +29,13 @@ describe GarconDeChefTraining do
   end
 
   describe '#initialize' do
+    context 'when `config.yml` does not exist' do
+      it 'should raise an error containing /please ensure file exists/' do
+        allow(File).to receive(:exist?).with('config.yml').and_return(false)
+        expect{ garcon.create_classroom! }
+          .to raise_error(/please ensure file exists/)
+      end
+    end
     it 'should load a YAML config' do
       expect(garcon.config).not_to be_nil
     end

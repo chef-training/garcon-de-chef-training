@@ -9,6 +9,9 @@ class GarconDeChefTraining
   attr_reader :config, :output_path, :terraform_dir, :safe_company_name
 
   def initialize(path_to_config_yaml = 'config.yml')
+    unless File.exist?(path_to_config_yaml)
+      raise "Cannot read #{path_to_config_yaml}, please ensure file exists"
+    end
     # rubocop:disable Security/YAMLLoad
     @config = YAML.load(File.read(path_to_config_yaml))
     # rubocop:enable Security/YAMLLoad
