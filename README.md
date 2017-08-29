@@ -10,9 +10,16 @@ This project does the following:
 
 ## Prerequisites
 
+### Terraform
 This project depends on Hashicorp Terraform to create resources in AWS. Ensure Terraform is installed by installing from [here](https://www.terraform.io/downloads.html).
 
 > NOTE: This guide assumes that the Terraform binary is in your PATH environment variable. Your package manager should handle this. If not, place the binary in `/usr/local/bin` or if on Windows, create a directory containing that binary and add it to your `%PATH%` (Example: `C:\Hashicorp\terraform`)
+
+
+### AWS CLI
+Terraform uses the AWS CLI  to perform the actions of the AWS provider. To install the AWS CLI follow the guide [here](http://docs.aws.amazon.com/cli/latest/userguide/installing.html).
+
+Make sure to configure your `~/.aws/credentials` as well (see [here](http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html)).
 
 ## How To Use
 

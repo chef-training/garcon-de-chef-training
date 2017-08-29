@@ -142,5 +142,49 @@ describe GarconDeChefTraining::Terraform do
       end
     end
   end
+  describe '#installed?' do
+    let(:terraform_installed?) do
+      GarconDeChefTraining::Terraform.installed?
+    end
+
+    context 'when Terraform is not installed' do
+      it 'returns true' do
+        allow(described_class).to receive(:system)
+          .with('terraform version > /dev/null')
+          .and_return(nil)
+        expect(terraform_installed?).to eql(false)
+      end
+    end
+    context 'when Terraform is installed' do
+      it 'returns true' do
+        allow(described_class).to receive(:system)
+          .with('terraform version > /dev/null')
+          .and_return(true)
+        expect(terraform_installed?).to eql(true)
+      end
+    end
+  end
+
+  describe '#awscli_installed?' do
+    let(:awscli_installed?) do
+      GarconDeChefTraining::Terraform.awscli_installed?
+    end
+    context 'when the AWS CLI is not installed' do
+      it 'returns true' do
+        allow(described_class).to receive(:system)
+          .with('aws --version &> /dev/null')
+          .and_return(nil)
+        expect(awscli_installed?).to eql(false)
+      end
+    end
+    context 'when the AWS CLI is installed' do
+      it 'returns true' do
+        allow(described_class).to receive(:system)
+          .with('aws --version &> /dev/null')
+          .and_return(true)
+        expect(awscli_installed?).to eql(true)
+      end
+    end
+  end
 end
 # rubocop:enable BlockLength

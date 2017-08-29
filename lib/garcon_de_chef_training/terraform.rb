@@ -30,6 +30,14 @@ class GarconDeChefTraining
       end
     end
 
+    def self.installed?
+      system('terraform version > /dev/null') ? true : false
+    end
+
+    def self.awscli_installed?
+      system('aws --version &> /dev/null') ? true : false
+    end
+
     # This allows for private methods in a module without needing a class
     class << self
       private

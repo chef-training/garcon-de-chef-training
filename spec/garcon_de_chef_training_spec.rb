@@ -36,6 +36,20 @@ describe GarconDeChefTraining do
           .to raise_error(/please ensure file exists/)
       end
     end
+    context 'when Terraform is not installed' do
+      it 'should raise an error containing /verify Terraform is installed/' do
+        allow(terraform).to receive(:installed?).and_return(false)
+        expect { garcon.create_classroom! }
+          .to raise_error(/verify Terraform is installed/)
+      end
+    end
+    context 'when the AWS CLI is not installed' do
+      it 'should raise an error containing /verify the AWS CLI is installed/' do
+        allow(terraform).to receive(:awscli_installed?).and_return(false)
+        expect { garcon.create_classroom! }
+          .to raise_error(/verify the AWS CLI is installed/)
+      end
+    end
     it 'should load a YAML config' do
       expect(garcon.config).not_to be_nil
     end

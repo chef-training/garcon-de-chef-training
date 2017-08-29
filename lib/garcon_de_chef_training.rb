@@ -12,6 +12,9 @@ class GarconDeChefTraining
     unless File.exist?(path_to_config_yaml)
       raise "Cannot read #{path_to_config_yaml}, please ensure file exists"
     end
+
+    verify_prerequisites
+
     # rubocop:disable Security/YAMLLoad
     @config = YAML.load(File.read(path_to_config_yaml))
     # rubocop:enable Security/YAMLLoad
@@ -108,5 +111,17 @@ class GarconDeChefTraining
     return selected_dirs.first if num_classes == 1
     raise "ERROR: Multiple classes match #{class_selector}" if num_classes > 1
     raise "ERROR: No classes match #{class_selector}" if num_classes.zero?
+  end
+
+  def verify_prerequisites
+    unless GarconDeChefTraining::Terraform.installed?
+      raise 'Running `terraform version` failed, verify Terraform is installed'
+    end
+
+    unless GarconDeChefTraining::Terraform.awscli_installed?
+      raise 'Running `aws --version` failed, verify the AWS CLI is installed'
+    end
+
+    true
   end
 end
