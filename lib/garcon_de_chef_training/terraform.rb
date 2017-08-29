@@ -9,6 +9,7 @@ class GarconDeChefTraining
       # This is used as a prefix for Terraform resources
       template_variables['safe_company_name'] = safe_company_name
       create_terraform_file!(template_data, template_variables, terraform_dir)
+      run_terraform_init!(terraform_dir)
       run_terraform_apply!(terraform_dir)
     end
 
@@ -77,6 +78,13 @@ class GarconDeChefTraining
           else
             puts "No changes detected in #{terraform_dir} with `terraform plan`"
           end
+        end
+      end
+
+      def run_terraform_init!(terraform_dir)
+        Dir.chdir(terraform_dir) do
+          puts "Running `terraform init` silently in `#{terraform_dir}`"
+          system('terraform init > /dev/null')
         end
       end
     end

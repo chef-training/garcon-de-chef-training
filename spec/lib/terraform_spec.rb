@@ -52,6 +52,10 @@ describe GarconDeChefTraining::Terraform do
     allow(described_class).to receive(:system)
       .with('terraform apply')
       .and_return(true)
+
+    allow(described_class).to receive(:system)
+      .with('terraform init > /dev/null')
+      .and_return(true)
   end
 
   describe '#create_classroom!' do
