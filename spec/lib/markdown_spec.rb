@@ -30,7 +30,7 @@ describe GarconDeChefTraining::Markdown do
   before do
     mock_erb = '<%= info[\'class_type\'] %>'
     allow(File).to receive(:read).with(/classroom_info.md/)
-      .and_return(mock_erb)
+                                 .and_return(mock_erb)
   end
 
   describe '#create_markdown!' do

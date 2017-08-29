@@ -32,7 +32,7 @@ namespace :test do
     system('rspec')
   end
 
-  task all: [:lint, :unit]
+  task all: %i[lint unit]
 end
 
 # Define common aliases

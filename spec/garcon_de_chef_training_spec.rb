@@ -32,7 +32,7 @@ describe GarconDeChefTraining do
     context 'when `config.yml` does not exist' do
       it 'should raise an error containing /please ensure file exists/' do
         allow(File).to receive(:exist?).with('config.yml').and_return(false)
-        expect{ garcon.create_classroom! }
+        expect { garcon.create_classroom! }
           .to raise_error(/please ensure file exists/)
       end
     end
@@ -114,7 +114,7 @@ describe GarconDeChefTraining do
       before do
         terraform_dirs = ['output/2017-05-20-mycorp-rspec-essentials/terraform']
         allow(Dir).to receive(:glob).with('output/**/terraform')
-          .and_return(terraform_dirs)
+                                    .and_return(terraform_dirs)
       end
       it 'should call ::Terraform.run_terraform_destroy!' do
         expect(terraform).to receive('run_terraform_destroy!')
@@ -136,7 +136,7 @@ describe GarconDeChefTraining do
           'output/2017-05-21-mycorp-rspec-essentials/terraform'
         ]
         allow(Dir).to receive(:glob).with('output/**/terraform')
-          .and_return(terraform_dirs)
+                                    .and_return(terraform_dirs)
       end
       it 'should not call #run_terraform_destroy!' do
         expect(terraform).to_not receive('run_terraform_destroy!')
@@ -157,7 +157,7 @@ describe GarconDeChefTraining do
           'output/0000-00-00-notcorp-notclass-essentials/terraform'
         ]
         allow(Dir).to receive(:glob).with('output/**/terraform')
-          .and_return(terraform_dirs)
+                                    .and_return(terraform_dirs)
       end
       it 'should not call #run_terraform_destroy!' do
         expect(terraform).to_not receive('run_terraform_destroy!')

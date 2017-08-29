@@ -29,7 +29,7 @@ describe GarconDeChefTraining::Terraform do
   before do
     mock_erb = '<%= template_variables[\'class_type\'] %>'
     allow(File).to receive(:read).with(/classroom.tf.erb/)
-      .and_return(mock_erb)
+                                 .and_return(mock_erb)
 
     # Only one context assumes this is false
     # Moving this allow here reduces repitition
