@@ -250,6 +250,34 @@ resource "aws_instance" "<%= student[0].tr('^A-Za-z0-9', '-') %>-Essentials-Web-
     delete_on_termination = true
   }
 }
+
+resource "aws_instance" "<%= student[0].tr('^A-Za-z0-9', '-') %>-Essentials-Web-3" {
+  depends_on                  = ["aws_internet_gateway.classroom-gw"]
+  ami                         = "<%= template_variables['classroom_data'][template_variables['class_type']]['ami'] %>"
+  instance_type               = "t1.micro"
+  vpc_security_group_ids      = ["${aws_security_group.classroom-sg.id}"]
+  subnet_id                   = "${aws_subnet.classroom-subnet.id}"
+  associate_public_ip_address = true
+
+  connection {
+    user     = "chef"
+    password = "Cod3Can!"
+  }
+
+  tags {
+    Name          = "<%= template_variables['safe_company_name'] %>-<%= student[0].tr('^A-Za-z0-9', '-') %>-<%= template_variables['class_type'] %>-Web-3"
+    Student-Name  = "<%= student[0] %>"
+    Student-Email = "<%= student[1] %>"
+    X-Dept        = "<%= template_variables['terraform_variables']['tags']['X-Dept'] %>"
+    X-Contact     = "<%= template_variables['terraform_variables']['tags']['X-Contact'] %>"
+  }
+
+  root_block_device {
+    volume_type           = "gp2"
+    volume_size           = "20"
+    delete_on_termination = true
+  }
+}
 <% end %>
 
 output "classroom_info" {
@@ -260,7 +288,8 @@ output "classroom_info" {
        "workstation_info", list(aws_instance.<%= student[0].tr('^A-Za-z0-9', '-') %>-Essentials-Workstation.0.public_ip, aws_instance.<%= student[0].tr('^A-Za-z0-9', '-') %>-Essentials-Workstation.0.public_dns),
        "load_balancer_info", list(aws_instance.<%= student[0].tr('^A-Za-z0-9', '-') %>-Essentials-Load-Balancer.0.public_ip, aws_instance.<%= student[0].tr('^A-Za-z0-9', '-') %>-Essentials-Load-Balancer.0.public_dns),
        "web_1_info", list(aws_instance.<%= student[0].tr('^A-Za-z0-9', '-') %>-Essentials-Web-1.0.public_ip, aws_instance.<%= student[0].tr('^A-Za-z0-9', '-') %>-Essentials-Web-1.0.public_dns),
-       "web_2_info", list(aws_instance.<%= student[0].tr('^A-Za-z0-9', '-') %>-Essentials-Web-2.0.public_ip, aws_instance.<%= student[0].tr('^A-Za-z0-9', '-') %>-Essentials-Web-2.0.public_dns)
+       "web_2_info", list(aws_instance.<%= student[0].tr('^A-Za-z0-9', '-') %>-Essentials-Web-2.0.public_ip, aws_instance.<%= student[0].tr('^A-Za-z0-9', '-') %>-Essentials-Web-2.0.public_dns),
+       "web_3_info", list(aws_instance.<%= student[0].tr('^A-Za-z0-9', '-') %>-Essentials-Web-3.0.public_ip, aws_instance.<%= student[0].tr('^A-Za-z0-9', '-') %>-Essentials-Web-3.0.public_dns)
      )}",
 <% end %>
   ]
