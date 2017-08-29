@@ -179,7 +179,7 @@ resource "aws_instance" "<%= student[0].tr('^A-Za-z0-9', '-') %>-Essentials-Work
   }
 }
 
-resource "aws_instance" "<%= student[0].tr('^A-Za-z0-9', '-') %>-Essentials-Load-Balancer" {
+resource "aws_instance" "<%= student[0].tr('^A-Za-z0-9', '-') %>-Essentials-Node-A" {
   depends_on                  = ["aws_internet_gateway.classroom-gw"]
   ami                         = "<%= template_variables['classroom_data'][template_variables['class_type']]['node-ami'] %>"
   instance_type               = "t2.large"
@@ -194,7 +194,7 @@ resource "aws_instance" "<%= student[0].tr('^A-Za-z0-9', '-') %>-Essentials-Load
   }
 
   tags {
-    Name          = "<%= template_variables['safe_company_name'] %>-<%= student[0].tr('^A-Za-z0-9', '-') %>-<%= template_variables['class_type'] %>-Load-Balancer"
+    Name          = "<%= template_variables['safe_company_name'] %>-<%= student[0].tr('^A-Za-z0-9', '-') %>-<%= template_variables['class_type'] %>-Node-A"
     Student-Name  = "<%= student[0] %>"
     Student-Email = "<%= student[1] %>"
     X-Dept        = "<%= template_variables['terraform_variables']['tags']['X-Dept'] %>"
@@ -208,7 +208,7 @@ resource "aws_instance" "<%= student[0].tr('^A-Za-z0-9', '-') %>-Essentials-Load
   }
 }
 
-resource "aws_instance" "<%= student[0].tr('^A-Za-z0-9', '-') %>-Essentials-Web-1" {
+resource "aws_instance" "<%= student[0].tr('^A-Za-z0-9', '-') %>-Essentials-Node-B" {
   depends_on                  = ["aws_internet_gateway.classroom-gw"]
   ami                         = "<%= template_variables['classroom_data'][template_variables['class_type']]['node-ami'] %>"
   instance_type               = "t2.large"
@@ -223,7 +223,7 @@ resource "aws_instance" "<%= student[0].tr('^A-Za-z0-9', '-') %>-Essentials-Web-
   }
 
   tags {
-    Name          = "<%= template_variables['safe_company_name'] %>-<%= student[0].tr('^A-Za-z0-9', '-') %>-<%= template_variables['class_type'] %>-Web-1"
+    Name          = "<%= template_variables['safe_company_name'] %>-<%= student[0].tr('^A-Za-z0-9', '-') %>-<%= template_variables['class_type'] %>-Node-B"
     Student-Name  = "<%= student[0] %>"
     Student-Email = "<%= student[1] %>"
     X-Dept        = "<%= template_variables['terraform_variables']['tags']['X-Dept'] %>"
@@ -237,7 +237,7 @@ resource "aws_instance" "<%= student[0].tr('^A-Za-z0-9', '-') %>-Essentials-Web-
   }
 }
 
-resource "aws_instance" "<%= student[0].tr('^A-Za-z0-9', '-') %>-Essentials-Web-2" {
+resource "aws_instance" "<%= student[0].tr('^A-Za-z0-9', '-') %>-Essentials-Node-C" {
   depends_on                  = ["aws_internet_gateway.classroom-gw"]
   ami                         = "<%= template_variables['classroom_data'][template_variables['class_type']]['node-ami'] %>"
   instance_type               = "t2.large"
@@ -252,7 +252,7 @@ resource "aws_instance" "<%= student[0].tr('^A-Za-z0-9', '-') %>-Essentials-Web-
   }
 
   tags {
-    Name          = "<%= template_variables['safe_company_name'] %>-<%= student[0].tr('^A-Za-z0-9', '-') %>-<%= template_variables['class_type'] %>-Web-2"
+    Name          = "<%= template_variables['safe_company_name'] %>-<%= student[0].tr('^A-Za-z0-9', '-') %>-<%= template_variables['class_type'] %>-Node-C"
     Student-Name  = "<%= student[0] %>"
     Student-Email = "<%= student[1] %>"
     X-Dept        = "<%= template_variables['terraform_variables']['tags']['X-Dept'] %>"
@@ -273,9 +273,9 @@ output "classroom_info" {
     "${map(
           "student_info", list("<%= student[0] %>", "<%= student[1] %>"),
           "workstation_info", list(aws_instance.<%= student[0].tr('^A-Za-z0-9', '-') %>-Essentials-Workstation.0.public_ip, aws_instance.<%= student[0].tr('^A-Za-z0-9', '-') %>-Essentials-Workstation.0.public_dns),
-          "load_balancer_info", list(aws_instance.<%= student[0].tr('^A-Za-z0-9', '-') %>-Essentials-Load-Balancer.0.public_ip, aws_instance.<%= student[0].tr('^A-Za-z0-9', '-') %>-Essentials-Load-Balancer.0.public_dns),
-          "web_1_info", list(aws_instance.<%= student[0].tr('^A-Za-z0-9', '-') %>-Essentials-Web-1.0.public_ip, aws_instance.<%= student[0].tr('^A-Za-z0-9', '-') %>-Essentials-Web-1.0.public_dns),
-          "web_2_info", list(aws_instance.<%= student[0].tr('^A-Za-z0-9', '-') %>-Essentials-Web-2.0.public_ip, aws_instance.<%= student[0].tr('^A-Za-z0-9', '-') %>-Essentials-Web-2.0.public_dns)
+          "node_a_info", list(aws_instance.<%= student[0].tr('^A-Za-z0-9', '-') %>-Essentials-Node-A.0.public_ip, aws_instance.<%= student[0].tr('^A-Za-z0-9', '-') %>-Essentials-Node-A.0.public_dns),
+          "node_b_info", list(aws_instance.<%= student[0].tr('^A-Za-z0-9', '-') %>-Essentials-Node-B.0.public_ip, aws_instance.<%= student[0].tr('^A-Za-z0-9', '-') %>-Essentials-Node-B.0.public_dns),
+          "node_c_info", list(aws_instance.<%= student[0].tr('^A-Za-z0-9', '-') %>-Essentials-Node-C.0.public_ip, aws_instance.<%= student[0].tr('^A-Za-z0-9', '-') %>-Essentials-Node-C.0.public_dns)
         )}",
 <% end %>
   ]

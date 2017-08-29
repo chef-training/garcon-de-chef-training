@@ -8,12 +8,12 @@
 | <%= i['student_info'][0] %> | <%= i['student_info'][1] %> | <%= i['workstation_info'][0] %> |
 <% end %>
 
-# Day 2 (Node Info)
+## Day 2 (Node Info)
 
-| Name | Email | Load Balancer IP | Web 1 IP | Web 2 IP |
-| ---- | ----- | ---------------- | -------- | -------- |
+| Name | Email | Node A | Node B | Node C |
+| ---- | ----- | ------ | ------ | ------ |
 <% info.each do |i| %>
-| <%= i['student_info'][0] %> | <%= i['student_info'][1] %> | <%= i['load_balancer_info'][0] %> | <%= i['web_1_info'][0] %> | <%= i['web_2_info'][0] %> |
+| <%= i['student_info'][0] %> | <%= i['student_info'][1] %> | <%= i['node_a_info'][0] %> | <%= i['node_b_info'][0] %> | <%= i['node_c_info'][0] %> |
 <% end %>
 
 ## Connection Info
