@@ -82,3 +82,13 @@ To run both use: `rake test`
 To run just RSpec run: `rake test:unit`
 
 To run just RuboCop run: `rake test:lint`
+
+## Known Issues
+
+### Availability Zone Not Supported
+
+#### Summary
+When creating Linux classrooms Terraform occasionally selects an AWS region that does not support `t1.micro` instances
+
+#### Solution
+Delete class directory under `output/` and try again
