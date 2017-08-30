@@ -3,6 +3,13 @@ provider "aws" {
   profile = "<%= template_variables['terraform_variables']['provider']['aws']['profile'] %>"
 }
 
+<% if template_variables['classroom_data'][template_variables['class_type']]['ami'] == 'most_recent' %>
+data "aws_ami" "node" {
+  most_recent = true
+  name_regex  = "TDD Cookbook Development - CentOS 6.7.*"
+}
+<% end %>
+
 resource "aws_vpc" "classroom-vpc" {
   cidr_block           = "10.0.0.0/16"
   enable_dns_hostnames = true
@@ -127,7 +134,12 @@ resource "aws_security_group" "classroom-sg" {
 
 resource "aws_instance" "<%= student[0].tr('^A-Za-z0-9', '-') %>-TDD-Workstation" {
   depends_on                  = ["aws_internet_gateway.classroom-gw"]
+  <% if template_variables['classroom_data'][template_variables['class_type']]['ami'] == 'most_recent' %>
+  ami                         = "${data.aws_ami.node.id}"
+  <% else %>
   ami                         = "<%= template_variables['classroom_data'][template_variables['class_type']]['ami'] %>"
+  <% end %>
+
   instance_type               = "t1.micro"
   vpc_security_group_ids      = ["${aws_security_group.classroom-sg.id}"]
   subnet_id                   = "${aws_subnet.classroom-subnet.id}"

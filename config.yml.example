@@ -21,13 +21,15 @@ students:
   - ['John Smith', 'john.smith@example.com']
 
 # NOTE: AMIs are region specific
+# NOTE: 'most_recent' can be replaced with an AMI ID (e.g. ami-d3a4d3c4)
+# WARNING: Verify that the most recent AMI matches what is in Appendix Z
 classroom_data:
   chef-essentials:
-    ami: 'ami-c957c3df'
+    ami: 'most_recent'
   chef-essentials-windows:
-    workstation-ami: 'ami-4a6da55c'
-    node-ami: 'ami-4a80ac20'
+    workstation-ami: 'most_recent'
+    node-ami: 'most_recent'
   chef-intermediate:
-    ami: 'ami-b41c8da2'
+    ami: 'most_recent'
   test_driven_cookbook_development:
-    ami: 'ami-48ac385e'
+    ami: 'most_recent'

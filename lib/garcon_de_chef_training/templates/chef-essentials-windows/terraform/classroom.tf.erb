@@ -3,6 +3,20 @@ provider "aws" {
   profile = "<%= template_variables['terraform_variables']['provider']['aws']['profile'] || 'default' %>"
 }
 
+<% if template_variables['classroom_data'][template_variables['class_type']]['workstation-ami'] == 'most_recent' %>
+data "aws_ami" "workstation" {
+  most_recent = true
+  name_regex  = "Essentials - Windows 2012 Workstation.*"
+}
+<% end %>
+
+<% if template_variables['classroom_data'][template_variables['class_type']]['node-ami'] == 'most_recent' %>
+data "aws_ami" "node" {
+  most_recent = true
+  name_regex  = "Essentials - Windows 2012 Node.*"
+}
+<% end %>
+
 resource "aws_vpc" "classroom-vpc" {
   cidr_block           = "10.0.0.0/16"
   enable_dns_hostnames = true
@@ -151,7 +165,11 @@ resource "aws_security_group" "classroom-sg" {
 
 resource "aws_instance" "<%= student[0].tr('^A-Za-z0-9', '-') %>-Essentials-Workstation" {
   depends_on                  = ["aws_internet_gateway.classroom-gw"]
+  <% if template_variables['classroom_data'][template_variables['class_type']]['workstation-ami'] == 'most_recent' %>
+  ami                         = "${data.aws_ami.workstation.id}"
+  <% else %>
   ami                         = "<%= template_variables['classroom_data'][template_variables['class_type']]['workstation-ami'] %>"
+  <% end %>
   instance_type               = "t2.large"
   vpc_security_group_ids      = ["${aws_security_group.classroom-sg.id}"]
   subnet_id                   = "${aws_subnet.classroom-subnet.id}"
@@ -181,7 +199,11 @@ resource "aws_instance" "<%= student[0].tr('^A-Za-z0-9', '-') %>-Essentials-Work
 
 resource "aws_instance" "<%= student[0].tr('^A-Za-z0-9', '-') %>-Essentials-Node-A" {
   depends_on                  = ["aws_internet_gateway.classroom-gw"]
+  <% if template_variables['classroom_data'][template_variables['class_type']]['node-ami'] == 'most_recent' %>
+  ami                         = "${data.aws_ami.node.id}"
+  <% else %>
   ami                         = "<%= template_variables['classroom_data'][template_variables['class_type']]['node-ami'] %>"
+  <% end %>
   instance_type               = "t2.large"
   vpc_security_group_ids      = ["${aws_security_group.classroom-sg.id}"]
   subnet_id                   = "${aws_subnet.classroom-subnet.id}"
@@ -210,7 +232,11 @@ resource "aws_instance" "<%= student[0].tr('^A-Za-z0-9', '-') %>-Essentials-Node
 
 resource "aws_instance" "<%= student[0].tr('^A-Za-z0-9', '-') %>-Essentials-Node-B" {
   depends_on                  = ["aws_internet_gateway.classroom-gw"]
+  <% if template_variables['classroom_data'][template_variables['class_type']]['node-ami'] == 'most_recent' %>
+  ami                         = "${data.aws_ami.node.id}"
+  <% else %>
   ami                         = "<%= template_variables['classroom_data'][template_variables['class_type']]['node-ami'] %>"
+  <% end %>
   instance_type               = "t2.large"
   vpc_security_group_ids      = ["${aws_security_group.classroom-sg.id}"]
   subnet_id                   = "${aws_subnet.classroom-subnet.id}"
@@ -239,7 +265,11 @@ resource "aws_instance" "<%= student[0].tr('^A-Za-z0-9', '-') %>-Essentials-Node
 
 resource "aws_instance" "<%= student[0].tr('^A-Za-z0-9', '-') %>-Essentials-Node-C" {
   depends_on                  = ["aws_internet_gateway.classroom-gw"]
+  <% if template_variables['classroom_data'][template_variables['class_type']]['node-ami'] == 'most_recent' %>
+  ami                         = "${data.aws_ami.node.id}"
+  <% else %>
   ami                         = "<%= template_variables['classroom_data'][template_variables['class_type']]['node-ami'] %>"
+  <% end %>
   instance_type               = "t2.large"
   vpc_security_group_ids      = ["${aws_security_group.classroom-sg.id}"]
   subnet_id                   = "${aws_subnet.classroom-subnet.id}"
