@@ -30,9 +30,10 @@ Make sure to configure your `~/.aws/credentials` as well (see [here](http://docs
     - Modify company name
     - Modify tag info (X-Dept, X-Contact)
     - Modify student list
-3. Run `rake create` or `./exe/garcon PATH_TO_CONFIG_YAML create`
-4. Create a GitHub Gist from resulting Markdown in `output/` (I recommend using <https://github.com/defunkt/gist>)
-5. Profit
+4. Run `rake create` or `./exe/garcon PATH_TO_CONFIG_YAML create`
+5. Verify that the AMIs used match the AMIs in Appendix Z of your training material
+6. Create a GitHub Gist from resulting Markdown in `output/` (I recommend using <https://github.com/defunkt/gist>)
+7. Profit
 
 ## Cleanup
 
